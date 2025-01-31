@@ -28,6 +28,7 @@
                 <p>Swim Start Offset: {{ wettkampf.Swim['start offset'] }}</p>
                 <p>Run Start Offset: {{ wettkampf.Run['start offset'] }}</p>
                 <form action="/submit" method="post">
+                    <input type="hidden" name="wettkampf_index" value="{{ loop.index0 }}">
                     {% for i in range(wettkampf.max) %}
                         <div class="form-group">
                             <label for="start_number_{{ i }}">Start Number</label>
