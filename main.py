@@ -1,5 +1,6 @@
 # Import required libraries
 import json
+import re
 from flask import Flask, request, render_template
 import csv
 from datetime import datetime
@@ -29,6 +30,9 @@ def submit():
     start_offsets = {}
     wettkampf = config['wettkampf']
     event = config['event']
+    # Ersetze Sonderzeichen durch '_'
+    event = re.sub(r'[()&/]', '_', event)
+    wettkampf = re.sub(r'[()&/]', '_', wettkampf)
     filename = f"{event}/{wettkampf}.cvs"
     selected_wettkampf_index = int(request.form['wettkampf_index'])
     selected_wettkampf = config['wettkampf'][selected_wettkampf_index]
