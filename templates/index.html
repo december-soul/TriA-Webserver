@@ -23,6 +23,40 @@
             </div>
         </form>
 
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Anleitung</h4>
+            <p>Willkommen auf dieser Seite! Hier kannst du deine gemessenen Zeiten für jede Startnummer bequem erfassen. Im Folgenden erfährst du Schritt für Schritt, wie du vorgehst:</p>
+            <hr>
+            <p class="mb-0"><strong>Startnummern und Zeiten eintragen</strong></p>
+            <ul>
+                <li>Gib die gewünschte Startnummer ein.</li>
+                <li>Erfasse anschließend die gemessenen Zeiten.</li>
+            </ul>
+            <p class="mb-0"><strong>Teilmengen abschicken</strong></p>
+            <ul>
+                <li>Du kannst problemlos auch nur einen Teil der Daten (z. B. die ersten 10 Zeiten) übermitteln, wenn noch weitere Zeiten folgen werden.</li>
+                <li>Die bereits eingetragenen Daten bleiben dabei erhalten.</li>
+            </ul>
+            <p class="mb-0"><strong>Automatische Konvertierung</strong></p>
+            <ul>
+                <li>Deine eingegebenen Zeiten werden abhängig von der Startzeit automatisch in das richtige Format umgewandelt.</li>
+                <li>Anschließend werden sie in einer Datei gespeichert, die du später in TriA importieren kannst.</li>
+            </ul>
+            <p class="mb-0"><strong>Dateiname erhalten</strong></p>
+            <ul>
+                <li>Nach dem Absenden wird dir direkt mitgeteilt, unter welchem Namen die Datei gespeichert wurde.</li>
+            </ul>
+            <p class="mb-0"><strong>Navigation per Pfeiltasten</strong></p>
+            <ul>
+                <li>Du kannst bequem mit den Pfeiltasten (↑ und ↓) zwischen den verschiedenen Startnummern wechseln, ohne die Seite neu zu laden.</li>
+            </ul>
+            <p class="mb-0"><strong>Aktualisierte Einträge</strong></p>
+            <ul>
+                <li>Es ist möglich, die gleiche Startnummer mehrmals zu übermitteln, falls sich Zeiten geändert haben.</li>
+                <li>In der von TriA ausgelesenen Datei wird stets der letzte Eintrag zu einer Startnummer berücksichtigt.</li>
+            </ul>
+        </div>
+
         {% for wettkampf in wettkampf %}
             <div class="wettkampf-form card mb-4" id="wettkampf_{{ loop.index0 }}" style="display: none;">
                 <div class="card-body">
