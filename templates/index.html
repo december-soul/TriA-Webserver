@@ -29,6 +29,7 @@
                     <h2 class="card-title">{{ wettkampf.title }}</h2>
                     <p class="card-text">Max Teilnehmer: {{ wettkampf.max }}</p>
                     <p class="card-text">Start Offset: {{ wettkampf['start offset'] }}</p>
+                </div>
                 <form action="/submit" method="post">
                     <input type="hidden" name="wettkampf_index" value="{{ loop.index0 }}">
                     {% for i in range(wettkampf.max) %}
@@ -53,7 +54,9 @@
 
             document.getElementById('wettkampfSelect').addEventListener('change', function() {
                 var selected = this.value;
+                console.log(selected)
                 document.querySelectorAll('.wettkampf-form').forEach(function(form, index) {
+                    console.log(selected)
                     form.style.display = (index == selected) ? 'block' : 'none';
                 });
             });
