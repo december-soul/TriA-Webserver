@@ -25,8 +25,7 @@
             <div class="wettkampf-form" id="wettkampf_{{ loop.index0 }}" style="display: none;">
                 <h2>{{ wettkampf.title }}</h2>
                 <p>Max Teilnehmer: {{ wettkampf.max }}</p>
-                <p>Swim Start Offset: {{ wettkampf.Swim['start offset'] }}</p>
-                <p>Run Start Offset: {{ wettkampf.Run['start offset'] }}</p>
+                <p>Start Offset: {{ wettkampf['start offset'] }}</p>
                 <form action="/submit" method="post">
                     <input type="hidden" name="wettkampf_index" value="{{ loop.index0 }}">
                     {% for i in range(wettkampf.max) %}
