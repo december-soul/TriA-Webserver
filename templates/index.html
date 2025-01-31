@@ -70,6 +70,7 @@
                     }
                 });
             });
+            document.getElementById('wettkampfSelect').addEventListener('change', function() {
                 var selected = this.value;
                 console.log(selected)
                 document.querySelectorAll('.wettkampf-form').forEach(function(form, index) {
