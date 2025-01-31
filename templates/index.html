@@ -7,10 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>{{ event }}</h1>
-        <img src="{{ Logo }}" alt="Logo">
-        <form id="wettkampfForm">
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h1 class="display-4">{{ event }}</h1>
+            <img src="{{ Logo }}" alt="Logo" class="img-fluid" style="max-width: 200px;">
+        </div>
+        <form id="wettkampfForm" class="mb-4">
             <div class="form-group">
                 <label for="wettkampfSelect">Wettkampf auswählen:</label>
                 <select id="wettkampfSelect" class="form-control">
@@ -18,14 +20,16 @@
                         <option value="{{ loop.index0 }}">{{ wettkampf.title }}</option>
                     {% endfor %}
                 </select>
+                </div>
             </div>
         </form>
 
         {% for wettkampf in wettkampf %}
-            <div class="wettkampf-form" id="wettkampf_{{ loop.index0 }}" style="display: none;">
-                <h2>{{ wettkampf.title }}</h2>
-                <p>Max Teilnehmer: {{ wettkampf.max }}</p>
-                <p>Start Offset: {{ wettkampf['start offset'] }}</p>
+            <div class="wettkampf-form card mb-4" id="wettkampf_{{ loop.index0 }}" style="display: none;">
+                <div class="card-body">
+                    <h2 class="card-title">{{ wettkampf.title }}</h2>
+                    <p class="card-text">Max Teilnehmer: {{ wettkampf.max }}</p>
+                    <p class="card-text">Start Offset: {{ wettkampf['start offset'] }}</p>
                 <form action="/submit" method="post">
                     <input type="hidden" name="wettkampf_index" value="{{ loop.index0 }}">
                     {% for i in range(wettkampf.max) %}
@@ -36,7 +40,7 @@
                             <input type="time" id="time_{{ i }}" name="time_{{ i }}">
                         </div>
                     {% endfor %}
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
                 </form>
             </div>
         {% endfor %}
