@@ -29,25 +29,28 @@ def index():
 @app.route('/submit', methods=['POST'])
 def submit():
     start_offsets = {}
-    wettkampf = config['wettkampf']
+    selected_wettkampf_index = int(request.form['wettkampf_index'])
+    selected_wettkampf = config['wettkampf'][selected_wettkampf_index]
     event = config['event']
+    print(f"{selected_wettkampf_index} {selected_wettkampf} {event}")
     # Ersetze Sonderzeichen durch '_'
-    event = re.sub(r'[()&/]', '_', event)
-    wettkampf = re.sub(r'[()&/]', '_', wettkampf)
+    event = re.sub(r'[()&/] ', '_', event)
+    wettkampf = re.sub(r'[()&/] ', '_', selected_wettkampf["title"])
     # Erstelle den Ordner, falls er nicht existiert
     if not os.path.exists(event):
         os.makedirs(event)
     filename = f"{event}/{wettkampf}.cvs"
-    selected_wettkampf_index = int(request.form['wettkampf_index'])
-    selected_wettkampf = config['wettkampf'][selected_wettkampf_index]
-    for i in range(int(selected_wettkampf['max'])):
-        start_number = request.form[f'start_number_{i}']
-        time = request.form[f'time_{i}']
-        start_offsets[i] = {'start_number': start_number, 'time': time}
-    # Send data to API as JSON
-    print(start_offsets)
-    #api_url = 'http://localhost:5000/api/event'
-    #response = requests.post(api_url, json={'event': config['event'],  'start_offsets': start_offsets})
+    with open(filename, 'a') as f:
+        writer = csv.writer(f)
+
+        for i in range(int(selected_wettkampf['max'])):
+            start_number = request.form[f'start_number_{i}']
+            time = request.form[f'time_{i}']
+            print(f"{start_number} -> {time}")
+            if start_number and time:
+                # start_offsets[i] = {'start_number': start_number, 'time': time}
+                writer.writerow([start_number, datetime.strptime(time, '%H:%M')])
+
     return 'Data submitted successfully!'
 
 # Write data to CSV file
