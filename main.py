@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 from flask import Flask, request, render_template
 
 # Load JSON config
-with open('config.json') as f:
-    config = json.load(f)
+with open('config.json') as cf:
+    config = json.load(cf)
 
 # Create Flask app
 app = Flask(__name__)
@@ -41,13 +41,12 @@ def combine_times(wettkampf_time, measured_time):
 # Handle form submission
 @app.route('/submit', methods=['POST'])
 def submit():
-    start_offsets = {}
     selected_wettkampf_index = int(request.form['wettkampf_index'])
     selected_wettkampf = config['wettkampf'][selected_wettkampf_index]
     event = config['event']
     event = re.sub(r'[()&/ ]', '_', event)
     wettkampf = re.sub(r'[()&/ ]', '_', selected_wettkampf["title"])
-    # Erstelle den Ordner, falls er nicht existiert
+    # create folder
     if not os.path.exists(event):
         os.makedirs(event)
     filename = f"{event}/{wettkampf}.trz"
@@ -67,4 +66,4 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5004, host='0.0.0.0')
