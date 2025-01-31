@@ -42,6 +42,9 @@
         {% endfor %}
 
         <script>
+            // Show the first wettkampf form by default
+            document.querySelector('.wettkampf-form').style.display = 'block';
+
             document.getElementById('wettkampfSelect').addEventListener('change', function() {
                 var selected = this.value;
                 document.querySelectorAll('.wettkampf-form').forEach(function(form, index) {
