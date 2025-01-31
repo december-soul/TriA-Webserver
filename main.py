@@ -27,7 +27,9 @@ def index():
 @app.route('/submit', methods=['POST'])
 def submit():
     start_offsets = {}
-    print(f"{config['wettkampf']}")
+    wettkampf = config['wettkampf']
+    event = config['event']
+    filename = f"{event}/{wettkampf}.cvs"
     selected_wettkampf_index = int(request.form['wettkampf_index'])
     selected_wettkampf = config['wettkampf'][selected_wettkampf_index]
     for i in range(int(selected_wettkampf['max'])):
@@ -35,8 +37,9 @@ def submit():
         time = request.form[f'time_{i}']
         start_offsets[i] = {'start_number': start_number, 'time': time}
     # Send data to API as JSON
-    api_url = 'http://localhost:5000/api/event'
-    response = requests.post(api_url, json={'event': config['event'],  'start_offsets': start_offsets})
+    print(start_offsets)
+    #api_url = 'http://localhost:5000/api/event'
+    #response = requests.post(api_url, json={'event': config['event'],  'start_offsets': start_offsets})
     return 'Data submitted successfully!'
 
 # Write data to CSV file
