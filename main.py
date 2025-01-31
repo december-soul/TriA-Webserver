@@ -47,7 +47,8 @@ def write_to_csv():
     # Open the corresponding CSV file for writing
     with open(f'{event_name}.csv', 'a') as f:
         writer = csv.writer(f)
-        writer.writerow([datetime.strptime(start_offsets['Swim'], '%H:%M'), datetime.strptime(start_offsets['Run'], '%H:%M')])
+        for offset in start_offsets.values():
+            writer.writerow([datetime.strptime(offset['time'], '%H:%M')])
     return 'Data written to CSV file successfully!'
 
 if __name__ == '__main__':
