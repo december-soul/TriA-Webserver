@@ -1,0 +1,66 @@
+{
+  "event": "SwimRun 2025",
+  "Logo": "https://tri-emtv.de/bilder/logo_swimrun.svg",
+  "wettkampf": [
+    {
+      "title": "Swim 100 & Run 400 - Swim",
+      "max": 32,
+      "start offset": "10:00:00"
+    },
+    {
+      "title": "Swim 100 & Run 400 - Run",
+      "max": 32,
+      "start offset": "11:00:00"
+    },
+    {
+      "title": "Swim 200 & Run 1200 - Swim",
+      "max": 32,
+      "start offset": "10:05:00"
+    },
+    {
+      "title": "Swim 200 & Run 1200 - Run",
+      "max": 32,
+      "start offset": "11:00:00"
+    },
+    {
+      "title": "Swim 400 & Run 2500 - Swim",
+      "max": 32,
+      "start offset": "10:20:00"
+    },
+    {
+      "title": "Swim 400 & Run 2500 - Run",
+      "max": 32,
+      "start offset": "11:00:00"
+    },
+    {
+      "title": "Swim 400 & Run 2500 Staffel - Swim",
+      "max": 32,
+      "start offset": "10:45:00"
+    },
+    {
+      "title": "Swim 400 & Run 2500 Staffel - Run",
+      "max": 32,
+      "start offset": "11:00:00"
+    },
+    {
+      "title": "Swim 800 & Run 5000 - Swim",
+      "max": 32,
+      "start offset": "10:30:00"
+    },
+    {
+      "title": "Swim 800 & Run 5000 - Run",
+      "max": 32,
+      "start offset": "11:00:00"
+    },
+    {
+      "title": "Swim 800 & Run 5000 Staffel - Swim",
+      "max": 32,
+      "start offset": "11:45:00"
+    },
+    {
+      "title": "Swim 800 & Run 5000 Staffel - Run",
+      "max": 32,
+      "start offset": "11:00:00"
+    }
+  ]
+}
