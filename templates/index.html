@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event }} - {{ Logo }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ event }}</h1>
+        <img src="{{ Logo }}" alt="Logo">
+        {% for wettkampf in wettkampf %}
+            <h2>{{ wettkampf.title }}</h2>
+            <p>Max Teilnehmer: {{ wettkampf.max }}</p>
+            <form action="/submit" method="post">
+                {% for i in range(wettkampf.max) %}
+                    <div class="form-group">
+                        <label for="start_number_{{ i }}">Start Number</label>
+                        <input type="number" id="start_number_{{ i }}" name="start_number_{{ i }}">
+                        <label for="time_{{ i }}">Time</label>
+                        <input type="time" id="time_{{ i }}" name="time_{{ i }}">
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        {% endfor %}
+    </div>
+</body>
+</html>
