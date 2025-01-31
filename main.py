@@ -30,7 +30,7 @@ def submit():
     print(f"{config['wettkampf']}")
     selected_wettkampf_index = int(request.form['wettkampf_index'])
     selected_wettkampf = config['wettkampf'][selected_wettkampf_index]
-    for i in range(selected_wettkampf['max']):
+    for i in range(int(selected_wettkampf['max'])):
         start_number = request.form[f'start_number_{i}']
         time = request.form[f'time_{i}']
         start_offsets[i] = {'start_number': start_number, 'time': time}
