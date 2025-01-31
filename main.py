@@ -1,6 +1,7 @@
 # Import required libraries
 import json
 import re
+import os
 from flask import Flask, request, render_template
 import csv
 from datetime import datetime
@@ -33,6 +34,9 @@ def submit():
     # Ersetze Sonderzeichen durch '_'
     event = re.sub(r'[()&/]', '_', event)
     wettkampf = re.sub(r'[()&/]', '_', wettkampf)
+    # Erstelle den Ordner, falls er nicht existiert
+    if not os.path.exists(event):
+        os.makedirs(event)
     filename = f"{event}/{wettkampf}.cvs"
     selected_wettkampf_index = int(request.form['wettkampf_index'])
     selected_wettkampf = config['wettkampf'][selected_wettkampf_index]
