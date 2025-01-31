@@ -52,7 +52,24 @@
             });
             document.querySelector('.wettkampf-form').style.display = 'block';
 
-            document.getElementById('wettkampfSelect').addEventListener('change', function() {
+            // Navigate between start number inputs using arrow keys
+            document.querySelectorAll('input[type="number"]').forEach((input, index, inputs) => {
+                input.addEventListener('keydown', function(event) {
+                    if (event.key === 'ArrowDown') {
+                        event.preventDefault();
+                        const nextInput = inputs[index + 1];
+                        if (nextInput) {
+                            nextInput.focus();
+                        }
+                    } else if (event.key === 'ArrowUp') {
+                        event.preventDefault();
+                        const prevInput = inputs[index - 1];
+                        if (prevInput) {
+                            prevInput.focus();
+                        }
+                    }
+                });
+            });
                 var selected = this.value;
                 console.log(selected)
                 document.querySelectorAll('.wettkampf-form').forEach(function(form, index) {
