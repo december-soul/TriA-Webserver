@@ -34,8 +34,8 @@ def submit():
     event = config['event']
     print(f"{selected_wettkampf_index} {selected_wettkampf} {event}")
     # Ersetze Sonderzeichen durch '_'
-    event = re.sub(r'[()&/] ', '_', event)
-    wettkampf = re.sub(r'[()&/] ', '_', selected_wettkampf["title"])
+    event = re.sub(r'[()&/]', '_', event)
+    wettkampf = re.sub(r'[()&/]', '_', selected_wettkampf["title"])
     # Erstelle den Ordner, falls er nicht existiert
     if not os.path.exists(event):
         os.makedirs(event)
