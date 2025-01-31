@@ -10,21 +10,43 @@
     <div class="container">
         <h1>{{ event }}</h1>
         <img src="{{ Logo }}" alt="Logo">
+        <form id="wettkampfForm">
+            <div class="form-group">
+                <label for="wettkampfSelect">Wettkampf auswählen:</label>
+                <select id="wettkampfSelect" class="form-control">
+                    {% for wettkampf in wettkampf %}
+                        <option value="{{ loop.index0 }}">{{ wettkampf.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
         {% for wettkampf in wettkampf %}
-            <h2>{{ wettkampf.title }}</h2>
-            <p>Max Teilnehmer: {{ wettkampf.max }}</p>
-            <form action="/submit" method="post">
-                {% for i in range(wettkampf.max) %}
-                    <div class="form-group">
-                        <label for="start_number_{{ i }}">Start Number</label>
-                        <input type="number" id="start_number_{{ i }}" name="start_number_{{ i }}">
-                        <label for="time_{{ i }}">Time</label>
-                        <input type="time" id="time_{{ i }}" name="time_{{ i }}">
-                    </div>
-                {% endfor %}
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <div class="wettkampf-form" id="wettkampf_{{ loop.index0 }}" style="display: none;">
+                <h2>{{ wettkampf.title }}</h2>
+                <p>Max Teilnehmer: {{ wettkampf.max }}</p>
+                <form action="/submit" method="post">
+                    {% for i in range(wettkampf.max) %}
+                        <div class="form-group">
+                            <label for="start_number_{{ i }}">Start Number</label>
+                            <input type="number" id="start_number_{{ i }}" name="start_number_{{ i }}">
+                            <label for="time_{{ i }}">Time</label>
+                            <input type="time" id="time_{{ i }}" name="time_{{ i }}">
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         {% endfor %}
+
+        <script>
+            document.getElementById('wettkampfSelect').addEventListener('change', function() {
+                var selected = this.value;
+                document.querySelectorAll('.wettkampf-form').forEach(function(form, index) {
+                    form.style.display = (index == selected) ? 'block' : 'none';
+                });
+            });
+        </script>
     </div>
 </body>
 </html>
