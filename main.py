@@ -18,17 +18,13 @@ app = Flask(__name__)
 # Create website template
 @app.route('/')
 def index():
-    var = "hello"
-    print("{}".format(var))
     event_name = config['event']
     logo = config['Logo']
     wettkampf = config['wettkampf']
-    max_participants = [wett[k] for wett in wettkampf for k in ['max']]
-    return render_template('index.html', event=event_name, Logo=logo, wettkampf=wettkampf, max=max_participants)
+    return render_template('index.html', event=event_name, Logo=logo, wettkampf=wettkampf)
 
 
 def combine_times(wettkampf_time, measured_time):
-    print(f"{wettkampf_time} {measured_time}")
     # Parse the wettkampf time
     wettkampf_dt = datetime.strptime(wettkampf_time, '%H:%M:%S')
 
@@ -49,8 +45,6 @@ def submit():
     selected_wettkampf_index = int(request.form['wettkampf_index'])
     selected_wettkampf = config['wettkampf'][selected_wettkampf_index]
     event = config['event']
-    print(f"{selected_wettkampf_index} {selected_wettkampf} {event}")
-    # Ersetze Sonderzeichen durch '_'
     event = re.sub(r'[()&/ ]', '_', event)
     wettkampf = re.sub(r'[()&/ ]', '_', selected_wettkampf["title"])
     # Erstelle den Ordner, falls er nicht existiert
@@ -59,18 +53,17 @@ def submit():
     filename = f"{event}/{wettkampf}.trz"
     with open(filename, 'a') as f:
         writer = csv.writer(f, delimiter='\t')
+        print(f"write data to {filename}")
 
         for i in range(int(selected_wettkampf['max'])):
             start_number = request.form[f'start_number_{i}'].zfill(4)
             time = request.form[f'time_{i}']
-            if start_number and time:
-                print(f"{start_number} -> {time}")
-                # start_offsets[i] = {'start_number': start_number, 'time': time}
-                # calc_time = datetime.strptime(time, '%M:%S')
+            if start_number and time and start_number != "0000":
                 ctimes = combine_times(selected_wettkampf["start offset"], time)
+                print(f"{start_number} -> {ctimes}")
                 writer.writerow([start_number, ctimes])
 
-    return 'Data submitted successfully!'
+    return f"Data submitted successfully!\n bitte importiere jetzt die Datei {event}/{wettkampf}.trz"
 
 
 if __name__ == '__main__':
