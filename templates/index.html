@@ -20,7 +20,6 @@
                         <option value="{{ loop.index0 }}">{{ wettkampf.title }}</option>
                     {% endfor %}
                 </select>
-                </div>
             </div>
         </form>
 
@@ -47,6 +46,9 @@
 
         <script>
             // Show the first wettkampf form by default
+            document.querySelectorAll('.wettkampf-form').forEach(function(form, index) {
+                form.style.display = (index === 0) ? 'block' : 'none';
+            });
             document.querySelector('.wettkampf-form').style.display = 'block';
 
             document.getElementById('wettkampfSelect').addEventListener('change', function() {
