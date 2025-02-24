@@ -42,12 +42,15 @@ def cert():
     print(wettkampf)
     return render_template('cert.html', event=event_name, Logo=logo, wettkampf=wettkampf)
 
-@app.route('/createCert')
+@app.route('/createCert', methods=['POST'])
 def createCert():
+    # Retrieve form data
+    form_data = request.form.to_dict()
+    print("Received form data:", form_data)
+    
     event_name = config['event']
     logo = config['Logo']
     wettkampf = extract_unique_titles(config['wettkampf'])
-    print(wettkampf)
     return render_template('cert.html', event=event_name, Logo=logo, wettkampf=wettkampf)
 
 def combine_times(wettkampf_time, measured_time):
