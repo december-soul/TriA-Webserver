@@ -12,7 +12,7 @@
             <h1 class="display-4">{{ event }}</h1>
             <img src="{{ Logo }}" alt="Logo" class="img-fluid" style="max-width: 200px;">
         </div>
-        <form id="wettkampfForm" class="mb-4">
+        <form id="wettkampfForm" class="mb-4" action="/createCert" method="post">
             <div class="form-group">
                 <label for="wettkampfSelect">Wettkampf auswählen:</label>
                 <select id="wettkampfSelect" class="form-control">
