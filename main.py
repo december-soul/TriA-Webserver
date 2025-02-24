@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 
 from flask import Flask, request, render_template
 
+from certificateGenerator import process_wettkamp
+
 # Load JSON config
 with open('config.json') as cf:
     config = json.load(cf)
@@ -47,11 +49,11 @@ def createCert():
     # Retrieve form data
     form_data = request.form.to_dict()
     print("Received form data:", form_data)
-    
-    event_name = config['event']
-    logo = config['Logo']
-    wettkampf = extract_unique_titles(config['wettkampf'])
-    return render_template('cert.html', event=event_name, Logo=logo, wettkampf=wettkampf)
+
+    selected_wettkampf = request.form['wettkampf_name']
+    print(selected_wettkampf)
+    process_wettkamp(f"{selected_wettkampf}.txt", 100, 400, False, False, False)
+    return "ok"
 
 def combine_times(wettkampf_time, measured_time):
     # Parse the wettkampf time
