@@ -52,8 +52,8 @@ def createCert():
 
     selected_wettkampf = request.form['wettkampf_name']
     print(selected_wettkampf)
-    process_wettkamp(f"{selected_wettkampf}.txt", 100, 400, False, False, False)
-    return "ok"
+    pdf_filename = process_wettkamp(f"{selected_wettkampf}.txt", 100, 400, False, False, False)
+    return send_file(pdf_filename, as_attachment=True)
 
 def combine_times(wettkampf_time, measured_time):
     # Parse the wettkampf time
