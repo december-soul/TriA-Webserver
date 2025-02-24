@@ -24,6 +24,32 @@ def index():
     return render_template('index.html', event=event_name, Logo=logo, wettkampf=wettkampf)
 
 
+def extract_unique_titles(events):
+    unique_titles = set()
+
+    for event in events:
+        title = event['title']
+        processed_title = title.split(" - ")[0]  # Alles nach " - " entfernen
+        unique_titles.add(processed_title)  # In ein Set einfügen (automatische Duplikatelöschung)
+
+    return list(unique_titles)  # Set in Liste umwandeln
+
+@app.route('/cert')
+def cert():
+    event_name = config['event']
+    logo = config['Logo']
+    wettkampf = extract_unique_titles(config['wettkampf'])
+    print(wettkampf)
+    return render_template('cert.html', event=event_name, Logo=logo, wettkampf=wettkampf)
+
+@app.route('/createCert')
+def createCert():
+    event_name = config['event']
+    logo = config['Logo']
+    wettkampf = extract_unique_titles(config['wettkampf'])
+    print(wettkampf)
+    return render_template('cert.html', event=event_name, Logo=logo, wettkampf=wettkampf)
+
 def combine_times(wettkampf_time, measured_time):
     # Parse the wettkampf time
     wettkampf_dt = datetime.strptime(wettkampf_time, '%H:%M:%S')
@@ -66,4 +92,4 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5004, host='0.0.0.0')
+    app.run(debug=True, port=5005, host='0.0.0.0')
