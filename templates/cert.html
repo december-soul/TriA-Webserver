@@ -15,7 +15,7 @@
         <form id="wettkampfForm" class="mb-4" action="/createCert" method="post">
             <div class="form-group">
                 <label for="wettkampfSelect">Wettkampf auswählen:</label>
-                <select id="wettkampfSelect" class="form-control">
+                <select id="wettkampfSelect" name="wettkampf_name" class="form-control">
                     {% for wettkampf in wettkampf %}
                         <option value="{{ loop.index0 }}">{{ wettkampf }}</option>
                     {% endfor %}
