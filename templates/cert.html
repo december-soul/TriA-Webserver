@@ -31,19 +31,6 @@
             </div>
         </form>
 
-
-        {% for wettkampf in wettkampf %}
-            <div class="wettkampf-form card mb-4" id="wettkampf_{{ loop.index0 }}" style="display: none;">
-                <div class="card-body">
-                    <h2 class="card-title">{{ wettkampf }}</h2>
-                </div>
-                <form action="/submit" method="post">
-                    <input type="hidden" name="wettkampf_index" value="{{ loop.index0 }}">
-                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                </form>
-            </div>
-        {% endfor %}
-
     </div>
 </body>
 </html>
