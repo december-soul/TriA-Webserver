@@ -5,7 +5,7 @@ import os
 import re
 from datetime import datetime, timedelta
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_file
 
 from certificateGenerator import process_wettkamp
 
