@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event }} - {{ Logo }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h1 class="display-4">{{ event }}</h1>
+            <img src="{{ Logo }}" alt="Logo" class="img-fluid" style="max-width: 200px;">
+        </div>
+        <form id="wettkampfForm" class="mb-4">
+            <div class="form-group">
+                <label for="wettkampfSelect">Wettkampf auswählen:</label>
+                <select id="wettkampfSelect" class="form-control">
+                    {% for wettkampf in wettkampf %}
+                        <option value="{{ loop.index0 }}">{{ wettkampf }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+
+        {% for wettkampf in wettkampf %}
+            <div class="wettkampf-form card mb-4" id="wettkampf_{{ loop.index0 }}" style="display: none;">
+                <div class="card-body">
+                    <h2 class="card-title">{{ wettkampf }}</h2>
+                </div>
+                <form action="/submit" method="post">
+                    <input type="hidden" name="wettkampf_index" value="{{ loop.index0 }}">
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+            </div>
+        {% endfor %}
+
+    </div>
+</body>
+</html>
