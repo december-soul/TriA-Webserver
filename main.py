@@ -9,6 +9,15 @@ from flask import Flask, request, render_template, send_file
 
 from certificateGenerator import process_wettkamp
 
+## TODO
+# Urkunden generieren, automatisch Staffel berücksichtigen
+# Der Name Groß macht Probleme
+# Staffel müssen noch generiert werden
+# lange Namen berücksichtigen
+# testen ob das mit dem Background so passt
+# random Zeiten Generator zum testen
+
+
 # Load JSON config
 with open('config.json') as cf:
     config = json.load(cf)
@@ -53,7 +62,7 @@ def createCert():
     selected_wettkampf = request.form['wettkampf_name']
     print(selected_wettkampf)
     pdf_filename = process_wettkamp(f"{selected_wettkampf}.txt", 100, 400, False, False, False)
-    return send_file(pdf_filename, as_attachment=True)
+    return send_file(pdf_filename, as_attachment=True, download_name=f"{selected_wettkampf}.pdf")
 
 def combine_times(wettkampf_time, measured_time):
     # Parse the wettkampf time
