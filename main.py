@@ -58,10 +58,22 @@ def createCert():
     # Retrieve form data
     form_data = request.form.to_dict()
     print("Received form data:", form_data)
+    onlytop = False
+    background = False
 
     selected_wettkampf = request.form['wettkampf_name']
     print(selected_wettkampf)
-    pdf_filename = process_wettkamp(f"{selected_wettkampf}.txt", 100, 400, False, False, False)
+    if selected_wettkampf == "Swim 100 & Run 400":
+        pdf_filename = process_wettkamp(f"{selected_wettkampf}.txt", 100, 400, False, onlytop, background)
+    elif selected_wettkampf == "Swim 200 & Run 1200":
+        pdf_filename = process_wettkamp(f"{selected_wettkampf}.txt", 200, 1200, False, onlytop, background)
+    elif selected_wettkampf == "Swim 400 & Run 2500":
+        pdf_filename = process_wettkamp(f"{selected_wettkampf}.txt", 400, 2500, False, onlytop, background)
+    elif selected_wettkampf == "Swim 800 & Run 5000":
+        pdf_filename = process_wettkamp(f"{selected_wettkampf}.txt", 800, 5000, False, onlytop, background)
+    elif selected_wettkampf == "Swim 800 & Run 5000 Staffel":
+        pdf_filename = process_wettkamp(f"{selected_wettkampf}.txt", 800, 5000, True, onlytop, background)
+
     return send_file(pdf_filename, as_attachment=True, download_name=f"{selected_wettkampf}.pdf")
 
 def combine_times(wettkampf_time, measured_time):
