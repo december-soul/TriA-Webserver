@@ -50,11 +50,57 @@ def create_directory(directory_name):
         os.mkdir(directory_name)
 
 
+def detect_format(filename):
+    """Detect whether file uses old or new TriA format by checking for Snr column."""
+    with open(filename, encoding='unicode_escape', errors='replace') as f:
+        lines = [next(f) for _ in range(15)]
+
+    # Find the CSV header line - it's the first line with a semicolon that's also a valid header
+    # The header line contains column names like Rng, Snr, Name, etc.
+    header_line = None
+    for line in lines:
+        # Header line has multiple semicolons and contains column markers
+        if ';' in line and ('Rng;' in line or 'Name' in line):
+            header_line = line
+            break
+
+    if header_line and 'Snr' in header_line:
+        return 'old'
+    return 'new'
+
+
+def get_column_mapping(format_type, lenswim, lenrun):
+    """Get column mapping based on format type."""
+    if format_type == 'old':
+        return {
+            'skiprows': 8,
+            'swim_col': f'S{lenswim}',
+            'run_col': f'L{lenrun}',
+            'total_col': 'Endzeit'
+        }
+    else:
+        # New format: Swim 100m, Run 400m, Summe
+        swim_col = f'Swim {lenswim}m'
+        run_col = f'Run {lenrun}m'
+        return {
+            'skiprows': 8,
+            'swim_col': swim_col,
+            'run_col': run_col,
+            'total_col': 'Summe'
+        }
+
+
 def process_wettkamp(filename, lenswim, lenrun, staffel, onlytop, background):
     print(f"Processing file: {filename}")
+
+    # Detect format and get column mapping
+    format_type = detect_format(filename)
+    print(f"Detected format: {format_type}")
+    col_mapping = get_column_mapping(format_type, lenswim, lenrun)
+
     wettkampf, veranstaltung = read_event_details(filename)
     create_directory(f"Urkunden_{wettkampf.replace('/', '_')}")
-    data = pd.read_csv(filename, encoding='unicode_escape', skiprows=8, delimiter=";", header=0)
+    data = pd.read_csv(filename, encoding='unicode_escape', skiprows=col_mapping['skiprows'], delimiter=";", header=0)
     generator = CertificateGenerator("background.png")
     pdf_all = FPDF()
     pdf_top3 = FPDF()
@@ -72,9 +118,9 @@ def process_wettkamp(filename, lenswim, lenrun, staffel, onlytop, background):
             if staffel:
                 name2 = f"{u._7}"
             verein = u.Mannschaft if staffel else u._4
-            swim = eval(f"u.S{lenswim}")
-            run = eval(f"u.L{lenrun}")
-            total = u.Endzeit
+            swim = getattr(u, col_mapping['swim_col'])
+            run = getattr(u, col_mapping['run_col'])
+            total = getattr(u, col_mapping['total_col'])
             if not onlytop:
                 print(f"Generating certificate for: {name} {name2}, Platz: {platz}, AK Platz: {ak_platz}")
                 pdf = FPDF()
