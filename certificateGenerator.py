@@ -53,7 +53,11 @@ def create_directory(directory_name):
 def detect_format(filename):
     """Detect whether file uses old or new TriA format by checking for Snr column."""
     with open(filename, encoding='unicode_escape', errors='replace') as f:
-        lines = [next(f) for _ in range(15)]
+        lines = []
+        for line in f:
+            if len(lines) >= 15:
+                break
+            lines.append(line)
 
     # Find the CSV header line - it's the first line with a semicolon that's also a valid header
     # The header line contains column names like Rng, Snr, Name, etc.
@@ -76,27 +80,46 @@ def get_column_mapping(format_type, lenswim, lenrun):
             'skiprows': 8,
             'swim_col': f'S{lenswim}',
             'run_col': f'L{lenrun}',
-            'total_col': 'Endzeit'
+            'total_col': 'Endzeit',
+            'name_idx': 3,      # "Name, Vorname" is at index 3 (after Index, Rng, Snr)
+            'verein_idx': 4     # "Verein/Ort" is at index 4
         }
     else:
-        # New format: Swim 100m, Run 400m, Summe
-        swim_col = f'Swim {lenswim}m'
-        run_col = f'Run {lenrun}m'
+        # New format: Swim 100m, Run 400m, Summe (no Snr column)
         return {
             'skiprows': 8,
-            'swim_col': swim_col,
-            'run_col': run_col,
-            'total_col': 'Summe'
+            'swim_col': 'S100',
+            'run_col': 'R400',
+            'total_col': 'Summe',
+            'name_idx': 2,      # "Name, Vorname" is at index 2 (after Index, Rng)
+            'verein_idx': 3     # "Verein/Ort" is at index 3
         }
+
+
+def get_staffel_mapping(lenswim, lenrun):
+    """Get column mapping for staffel (relay) format."""
+    return {
+        'skiprows': 8,
+        'swim_col': f'S{lenswim}',
+        'run_col': f'L{lenrun}',
+        'total_col': 'Endzeit',
+        'name_idx': 4,       # Teilnehmer 1 (after Index, Rng, Snr, Mannschaft)
+        'verein_idx': 3,     # Mannschaft (team)
+        'name2_idx': 7       # Teilnehmer 2 (after Index, Rng, Snr, Mannschaft, Teilnehmer1, S800, Rng1)
+    }
 
 
 def process_wettkamp(filename, lenswim, lenrun, staffel, onlytop, background):
     print(f"Processing file: {filename}")
 
-    # Detect format and get column mapping
-    format_type = detect_format(filename)
+    # Get column mapping based on format
+    if staffel:
+        col_mapping = get_staffel_mapping(lenswim, lenrun)
+        format_type = 'staffel'
+    else:
+        format_type = detect_format(filename)
+        col_mapping = get_column_mapping(format_type, lenswim, lenrun)
     print(f"Detected format: {format_type}")
-    col_mapping = get_column_mapping(format_type, lenswim, lenrun)
 
     wettkampf, veranstaltung = read_event_details(filename)
     create_directory(f"Urkunden_{wettkampf.replace('/', '_')}")
@@ -110,14 +133,10 @@ def process_wettkamp(filename, lenswim, lenrun, staffel, onlytop, background):
         if platz != "DNF":
             ak = None if staffel else u.Ak
             ak_platz = u.AkRng if ak else platz
-            if staffel:
-                name = f"{u._4}"
-            else:
-                name = f"{u._3}"
-            name2 = None
-            if staffel:
-                name2 = f"{u._7}"
-            verein = u.Mannschaft if staffel else u._4
+            # Use index-based access for Name and Verein to handle both formats
+            name = f"{u[col_mapping['name_idx']]}"
+            name2 = f"{u[col_mapping['name2_idx']]}" if 'name2_idx' in col_mapping and col_mapping['name2_idx'] else None
+            verein = u[col_mapping['verein_idx']]
             swim = getattr(u, col_mapping['swim_col'])
             run = getattr(u, col_mapping['run_col'])
             total = getattr(u, col_mapping['total_col'])
