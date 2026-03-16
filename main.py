@@ -58,8 +58,8 @@ def createCert():
     # Retrieve form data
     form_data = request.form.to_dict()
     print("Received form data:", form_data)
-    onlytop = False
-    background = False
+    onlytop    = request.form.get('onlyTop3')       == 'on'
+    background = request.form.get('withBackground') == 'on'
 
     selected_wettkampf = request.form['wettkampf_name']
     print(selected_wettkampf)
