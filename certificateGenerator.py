@@ -51,26 +51,15 @@ def create_directory(directory_name):
 
 
 def detect_format(filename):
-    """Detect whether file uses old or new TriA format by checking for Snr column."""
+    """Detect whether file uses old or new TriA format by checking for 'Serienwertung'."""
     with open(filename, encoding='unicode_escape', errors='replace') as f:
-        lines = []
-        for line in f:
-            if len(lines) >= 15:
+        for _ in range(15):
+            line = f.readline()
+            if not line:
                 break
-            lines.append(line)
-
-    # Find the CSV header line - it's the first line with a semicolon that's also a valid header
-    # The header line contains column names like Rng, Snr, Name, etc.
-    header_line = None
-    for line in lines:
-        # Header line has multiple semicolons and contains column markers
-        if ';' in line and ('Rng;' in line or 'Name' in line):
-            header_line = line
-            break
-
-    if header_line and 'Snr' in header_line:
-        return 'old'
-    return 'new'
+            if 'Serienwertung' in line:
+                return 'new'
+    return 'old'
 
 
 def get_column_mapping(format_type, lenswim, lenrun):
