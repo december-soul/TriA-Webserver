@@ -5,52 +5,32 @@
     {
       "title": "Swim 100 & Run 400 - Swim",
       "max": 32,
-      "start offset": "10:00:00"
-    },
-    {
-      "title": "Swim 100 & Run 400 - Run",
-      "max": 32,
-      "start offset": "11:00:00"
+      "start offset": "15:00:00"
     },
     {
       "title": "Swim 200 & Run 1200 - Swim",
       "max": 32,
-      "start offset": "10:05:00"
+      "start offset": "15:05:00"
     },
     {
-      "title": "Swim 200 & Run 1200 - Run",
+      "title": "Swim 400 & Run 2500 - Swim Lauf 1",
       "max": 32,
-      "start offset": "11:00:00"
+      "start offset": "15:15:00"
     },
     {
-      "title": "Swim 400 & Run 2500 - Swim",
-      "max": 50,
-      "start offset": "10:20:00"
-    },
-    {
-      "title": "Swim 400 & Run 2500 - Run",
-      "max": 50,
-      "start offset": "11:00:00"
-    },
-    {
-      "title": "Swim 800 & Run 5000 - Swim",
+      "title": "Swim 400 & Run 2500 - Swim Lauf 2",
       "max": 32,
-      "start offset": "10:35:00"
+      "start offset": "15:30:00"
     },
     {
-      "title": "Swim 800 & Run 5000 - Run",
+      "title": "Swim 800 & Run 5000 - Swim Lauf 1",
       "max": 32,
-      "start offset": "12:00:00"
+      "start offset": "15:40:00"
     },
     {
-      "title": "Swim 800 & Run 5000 Staffel - Swim",
+      "title": "Swim 800 & Run 5000 - Swim Lauf 2",
       "max": 32,
-      "start offset": "11:35:00"
-    },
-    {
-      "title": "Swim 800 & Run 5000 Staffel - Run",
-      "max": 32,
-      "start offset": "12:00:00"
+      "start offset": "16:05:00"
     }
   ]
 }

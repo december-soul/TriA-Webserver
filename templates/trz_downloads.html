@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event }} – TRZ Dateien Download</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h1 class="display-4">{{ event }}</h1>
+            <img src="{{ Logo }}" alt="Logo" class="img-fluid" style="max-width: 200px;">
+        </div>
+
+        <h2 class="mb-4">TRZ Dateien Download</h2>
+
+        <p>
+            <a href="/" class="btn btn-secondary btn-sm">← Zurück zur Startseite</a>
+        </p>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">SwimRun 2026 – Ergebnisdateien (.trz)</h5>
+            </div>
+            <div class="card-body">
+                {% if files %}
+                <ul class="list-group list-group-flush">
+                    {% for file in files %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ file }}</span>
+                        <a href="/trz-files/{{ file | urlencode }}"
+                           class="btn btn-primary btn-sm">
+                            ⬇ Download
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted mb-0">Keine TRZ-Dateien vorhanden.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

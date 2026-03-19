@@ -97,13 +97,16 @@ def _safe_dir(path: str) -> None:
 
 def detect_format(filename: str) -> str:
     """Detect whether the file uses the old or new TriA format by looking for 'Serienwertung'."""
-    with open(filename, encoding="unicode_escape", errors="replace") as f:
-        for _ in range(15):
-            line = f.readline()
-            if not line:
-                break
-            if "Serienwertung" in line:
-                return "new"
+    try:
+        with open(filename, encoding="unicode_escape", errors="replace") as f:
+            for _ in range(15):
+                line = f.readline()
+                if not line:
+                    break
+                if "Serienwertung" in line:
+                    return "new"
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Datei nicht gefunden: '{filename}'")
     return "old"
 
 
@@ -234,6 +237,11 @@ def process_wettkamp(
     has_top3 = False
 
     logger.info("Generating certificates for %d participants", len(data))
+    logger.debug(
+        "Column mapping: swim_col=%r, run_col=%r, total_col=%r",
+        col_mapping["swim_col"], col_mapping["run_col"], col_mapping["total_col"],
+    )
+    logger.debug("DataFrame columns: %s", list(data.columns))
 
     for u in data.itertuples():
         platz = u.Rng
@@ -256,9 +264,30 @@ def process_wettkamp(
             u[col_mapping["name2_idx"]] if "name2_idx" in col_mapping else None
         )
         verein = u[col_mapping["verein_idx"]]
-        swim   = getattr(u, col_mapping["swim_col"])
-        run    = getattr(u, col_mapping["run_col"])
-        total  = getattr(u, col_mapping["total_col"])
+        try:
+            swim = getattr(u, col_mapping["swim_col"])
+        except AttributeError:
+            logger.error(
+                "Column %r not found. Available columns: %s  |  lenswim=%r, lenrun=%r, format=%r",
+                col_mapping["swim_col"], list(data.columns), lenswim, lenrun, format_type,
+            )
+            raise
+        try:
+            run = getattr(u, col_mapping["run_col"])
+        except AttributeError:
+            logger.error(
+                "Column %r not found. Available columns: %s  |  lenswim=%r, lenrun=%r, format=%r",
+                col_mapping["run_col"], list(data.columns), lenswim, lenrun, format_type,
+            )
+            raise
+        try:
+            total = getattr(u, col_mapping["total_col"])
+        except AttributeError:
+            logger.error(
+                "Column %r not found. Available columns: %s  |  format=%r",
+                col_mapping["total_col"], list(data.columns), format_type,
+            )
+            raise
 
         participant = ParticipantData(
             name=name, name2=name2, verein=verein,

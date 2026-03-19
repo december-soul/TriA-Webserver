@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event }} – Urkunden Download</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .dir-card { margin-bottom: 1.5rem; }
+        .pdf-link { display: inline-block; margin: 2px 4px; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h1 class="display-4">{{ event }}</h1>
+            <img src="{{ Logo }}" alt="Logo" class="img-fluid" style="max-width: 200px;">
+        </div>
+
+        <h2 class="mb-4">Urkunden Download</h2>
+
+        <p>
+            <a href="/" class="btn btn-secondary btn-sm">← Zurück zur Startseite</a>
+            <a href="/cert" class="btn btn-secondary btn-sm ml-2">Urkunden erstellen</a>
+            <a href="/trz-files" class="btn btn-secondary btn-sm ml-2">TRZ-Dateien</a>
+        </p>
+
+        {% for dir in dirs %}
+        <div class="card dir-card">
+            <div class="card-header">
+                <h5 class="mb-0">{{ dir.name }}</h5>
+            </div>
+            <div class="card-body">
+                {% if dir.files %}
+                <ul class="list-group list-group-flush">
+                    {% for file in dir.files %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ file }}</span>
+                        <a href="/downloads/{{ dir.idx }}/{{ file | urlencode }}"
+                           class="btn btn-primary btn-sm pdf-link">
+                            ⬇ Download
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted mb-0">Keine PDF-Dateien vorhanden.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
